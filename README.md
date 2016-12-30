@@ -1,5 +1,4 @@
-cmb2sphere
-----------
+# cmb2sphere
 
 Converts [Planck](http://sci.esa.int/planck/) temperature data into a height
 profile on a sphere. Inspired by ['Cosmic sculpture: a new way to visualise the cosmic microwave background'] [1] by Clements, D. L., S. Sato, and A. Portela Fonseca.
@@ -11,8 +10,7 @@ anything that is wrong with the script. As often in "research" there wasn't
 enough time to do it right... or maybe I was to lazy to improve it further. :p
 (We really need a standardized note for this)
 
-License
-=======
+## License
 
 The script itself is usable under the GPLv3. Please see the *COPYING* file for
 details. If there are questions in your jurisdiction, or if the GPLv3 is not
