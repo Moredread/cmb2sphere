@@ -1,4 +1,4 @@
-planck2stl
+cmb2sphere
 ----------
 
 Converts [Planck](http://sci.esa.int/planck/) temperature data into a height
