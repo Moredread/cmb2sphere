@@ -1,4 +1,15 @@
 """
+cmp2sphere
+
+Usage:
+  cmb2sphere [--fwhm=<degrees> --nside=<n>] <outfilename>
+
+Options:
+  --fwhm=<degrees>      Smooth using Gaussian with FHWM of <degrees> [default: 0]
+  --nside=<n>           Reduce healpix mesh to n_side = <n> [default: 128]
+"""
+
+"""
 cmb2sphere.py
 Copyright (C) 2016  Andre-Patrick Bubel <code@andre-bubel.de>
 
@@ -28,11 +39,14 @@ from stl import mesh
 from scipy.spatial import ConvexHull
 import math
 import shelve
+from docopt import docopt
 
-NSIDE_TARGET = 256
+opts = docopt(__doc__)
+
+NSIDE_TARGET = int(opts["--nside"])
 RADIUS = 30.
 AMPLITUDE = 0.1 * RADIUS
-FHWM = math.radians(2)
+FHWM = math.radians(float(opts["--fwhm"]))
 INPUT = "data/COM_CMB_IQU-commander-field-Int_2048_R2.01_full.fits"
 # INPUT = "data/COM_CMB_IQU-commander_1024_R2.02_full.fits"
 # INPUT = "data/COM_CMB_IQU-commander_0256_R2.00.fits"
@@ -82,7 +96,7 @@ def main():
         print(scale)
         r = RADIUS + scale * map_ps
     else:
-        r = (RADIUS + 2 * 10000 * map_ps) / RADIUS * 50.0
+        r = (RADIUS + 2 * 10000 * map_ps)
 
     data = np.stack(spherical(r, theta, phi), -1)
     points = np.stack(spherical(1, theta, phi), -1)
@@ -99,7 +113,7 @@ def main():
     faces = s[key]
     s.close()
 
-    save_mesh("planck.stl", faces, vertices)
+    save_mesh(opts["<outfilename>"], faces, vertices)
 
     if PLOTS:
         wmap_map_I_smoothed = hp.smoothing(map, fwhm=FHWM)
