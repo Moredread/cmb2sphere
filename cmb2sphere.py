@@ -33,7 +33,6 @@ import sys
 sys.ps1 = 'SOMETHING'
 import numpy as np
 import healpy as hp
-import pylab as plt
 import pickle
 from stl import mesh
 from scipy.spatial import ConvexHull
@@ -47,20 +46,16 @@ NSIDE_TARGET = int(opts["--nside"])
 RADIUS = 30.
 AMPLITUDE = 0.1 * RADIUS
 FHWM = math.radians(float(opts["--fwhm"]))
-INPUT = "data/COM_CMB_IQU-commander-field-Int_2048_R2.01_full.fits"
-# INPUT = "data/COM_CMB_IQU-commander_1024_R2.02_full.fits"
+# INPUT = "data/COM_CMB_IQU-commander-field-Int_2048_R2.01_full.fits"
+INPUT = "data/COM_CMB_IQU-commander_1024_R2.02_full.fits"
 # INPUT = "data/COM_CMB_IQU-commander_0256_R2.00.fits"
-PLOTS = False
 AUTOSCALE = False
 
 
 def basename(filename):
     return filename.split(".")[0]
 
-
 def main():
-    plt.ion()
-
     map = hp.read_map(INPUT)
 
     pickle_filename = "{}.pickle".format(basename(INPUT))
@@ -68,8 +63,7 @@ def main():
         with open(pickle_filename, "rb") as f:
             alm = pickle.load(f)
             print("Alm loaded")
-    except Exception, e:
-        print(e)
+    except:
         print("Generate alm")
         alm = hp.map2alm(map)
         with open(pickle_filename, "wb") as f:
@@ -83,10 +77,6 @@ def main():
     map_ps = s[key]
 
     s.close()
-
-    if PLOTS:
-        hp.mollview(map_ps)
-        hp.mollview(map)
 
     theta, phi = hp.pix2ang(NSIDE_TARGET, np.arange(hp.nside2npix(NSIDE_TARGET)))
     amplitude = max(abs(np.max(map_ps)), abs(np.min(map_ps)))
@@ -114,12 +104,6 @@ def main():
     s.close()
 
     save_mesh(opts["<outfilename>"], faces, vertices)
-
-    if PLOTS:
-        wmap_map_I_smoothed = hp.smoothing(map, fwhm=FHWM)
-        hp.mollview(wmap_map_I_smoothed, title='Map smoothed 1 deg')
-
-    plt.show(block=True)
 
 
 def fix_orientation(faces, points):

@@ -4,3 +4,4 @@ numpy
 scipy
 numpy-stl
 docopt
+pytest
