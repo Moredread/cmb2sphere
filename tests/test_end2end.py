@@ -14,7 +14,7 @@ def temp(request):
 
 def test_cli_writes_a_file(temp):
     run(["python", "cmb2sphere.py", temp])
-    assert os.path.isfile(temp)
+    assert os.path.getsize(temp) > 0
 
 
 def test_vertex_normals_all_point_outwards(temp):
