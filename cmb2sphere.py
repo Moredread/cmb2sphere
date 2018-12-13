@@ -91,6 +91,8 @@ def main():
     data = np.stack(spherical(r, theta, phi), -1)
     points = np.stack(spherical(1, theta, phi), -1)
 
+    assert points.shape[0] == hp.nside2npix(NSIDE_TARGET)
+
     vertices = data
 
     s = shelve.open("faces.shelve")
@@ -98,10 +100,12 @@ def main():
     if key not in s:
         hull = ConvexHull(points)
         faces = hull.simplices
-        fix_orientation(faces, points)
+        #fix_orientation(faces, points)
         s[key] = faces
     faces = s[key]
     s.close()
+
+    assert faces.shape[0] == vertices.shape[0]
 
     save_mesh(opts["<outfilename>"], faces, vertices)
 

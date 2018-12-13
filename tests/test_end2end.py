@@ -4,6 +4,7 @@ import os
 import tempfile
 import pytest
 import numpy as np
+import healpy as hp
 
 
 @pytest.fixture
@@ -23,4 +24,17 @@ def test_vertex_normals_all_point_outwards(temp):
 
     for normal, vertex in zip(cmb_mesh.normals, cmb_mesh.v0):
         assert np.dot(normal, vertex)
-        
+
+def test_vertex_number_is_correct_for_nside_default(temp):
+    nside_default = 128
+    run(["python", "cmb2sphere.py", temp])
+    cmb_mesh = mesh.Mesh.from_file(temp)
+
+    assert cmb_mesh.normals.shape[0] == hp.nside2npix(int(nside_default))
+
+def test_vertex_number_is_correct_for_nside_from_parameter(temp):
+    nside = "256"
+    run(["python", "cmb2sphere.py", "--nside", nside, temp])
+    cmb_mesh = mesh.Mesh.from_file(temp)
+
+    assert len(set(cmb_mesh.v0)) == hp.nside2npix(int(nside))
