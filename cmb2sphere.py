@@ -105,8 +105,6 @@ def main():
     faces = s[key]
     s.close()
 
-    assert faces.shape[0] == vertices.shape[0]
-
     save_mesh(opts["<outfilename>"], faces, vertices)
 
 
