@@ -88,19 +88,18 @@ def main():
     else:
         r = (RADIUS + 2 * 10000 * map_ps)
 
-    data = np.stack(spherical(r, theta, phi), -1)
+    vertices = np.stack(spherical(r, theta, phi), -1)
     points = np.stack(spherical(1, theta, phi), -1)
 
     assert points.shape[0] == hp.nside2npix(NSIDE_TARGET)
-
-    vertices = data
+    assert points.shape[0] == vertices.shape[0]
 
     s = shelve.open("faces.shelve")
     key = str(NSIDE_TARGET)
     if key not in s:
         hull = ConvexHull(points)
         faces = hull.simplices
-        #fix_orientation(faces, points)
+        fix_orientation(faces, points)
         s[key] = faces
     faces = s[key]
     s.close()
