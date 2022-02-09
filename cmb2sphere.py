@@ -5,26 +5,26 @@ Usage:
   cmb2sphere [--fwhm=<degrees> --nside=<n>] <outfilename>
 
 Options:
-  --fwhm=<degrees>      Smooth using Gaussian with FHWM of <degrees> [default: 0]
+  --fwhm=<degrees>      Smooth using Gaussian with FHWM of <degrees> [default: 2]
   --nside=<n>           Reduce healpix mesh to n_side = <n> [default: 128]
 """
 
 """
 cmb2sphere.py
-Copyright (C) 2016  Andre-Patrick Bubel <code@andre-bubel.de>
+Copyright (C) 2022  André-Patrick Bubel
 
 This program is free software: you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation, either version 3 of the License, or
-(at your option) any later version.
+it under the terms of the GNU Affero General Public License as published
+by the Free Software Foundation, either version 3 of the License, or
+any later version.
 
 This program is distributed in the hope that it will be useful,
 but WITHOUT ANY WARRANTY; without even the implied warranty of
 MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
+GNU Affero General Public License for more details.
 
-You should have received a copy of the GNU General Public License
-along with this program. If not, see <http://www.gnu.org/licenses/>.
+You should have received a copy of the GNU Affero General Public License
+along with this program.  If not, see <https://www.gnu.org/licenses/>.
 """
 
 

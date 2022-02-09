@@ -10,6 +10,10 @@ anything that is wrong with the script. As often in "research" there wasn't
 enough time to do it right... or maybe I was to lazy to improve it further. :p
 (We really need a standardized note for this)
 
+## Usage
+
+Download https://irsa.ipac.caltech.edu/data/Planck/release_2/all-sky-maps/maps/component-maps/cmb/COM_CMB_IQU-commander_1024_R2.02_full.fits and place it in the "data" subdirectory.
+
 ## License
 
 The script itself is usable under the GPLv3. Please see the *COPYING* file for
