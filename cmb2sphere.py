@@ -30,7 +30,6 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 import sys
 
-sys.ps1 = 'SOMETHING'
 import numpy as np
 import healpy as hp
 import pickle
