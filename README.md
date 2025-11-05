@@ -19,7 +19,7 @@ Download https://irsa.ipac.caltech.edu/data/Planck/release_2/all-sky-maps/maps/c
 The script itself is usable under the AGPLv3. Please see the *COPYING* file for
 details. If there are questions in your jurisdiction, or if the AGPLv3 is not
 clear enough on the point, please consider the resulting mesh files under a CC0
-or whatever you like. Effectivly, do what you want with them, but please consider a
+or whatever you like. Effectively, do what you want with them, but please consider a
 citation, or other kind of attribution.
 
 
