@@ -71,14 +71,11 @@ def main():
         with open(pickle_filename, "wb") as f:
             pickle.dump(alm, f)
 
-    s = shelve.open("cache.shelve")
-
-    key = "{}^{}^{}".format(INPUT, NSIDE_TARGET, FWHM)
-    if key not in s:
-        s[key] = hp.alm2map(alm, NSIDE_TARGET, fwhm=FWHM)
-    map_ps = s[key]
-
-    s.close()
+    with shelve.open("cache.shelve") as s:
+        key = "{}^{}^{}".format(INPUT, NSIDE_TARGET, FWHM)
+        if key not in s:
+            s[key] = hp.alm2map(alm, NSIDE_TARGET, fwhm=FWHM)
+        map_ps = s[key]
 
     theta, phi = hp.pix2ang(NSIDE_TARGET, np.arange(hp.nside2npix(NSIDE_TARGET)))
     amplitude = max(abs(np.max(map_ps)), abs(np.min(map_ps)))
@@ -96,15 +93,14 @@ def main():
     assert points.shape[0] == hp.nside2npix(NSIDE_TARGET)
     assert points.shape[0] == vertices.shape[0]
 
-    s = shelve.open("faces.shelve")
-    key = str(NSIDE_TARGET)
-    if key not in s:
-        hull = ConvexHull(points)
-        faces = hull.simplices
-        fix_orientation(faces, points)
-        s[key] = faces
-    faces = s[key]
-    s.close()
+    with shelve.open("faces.shelve") as s:
+        key = str(NSIDE_TARGET)
+        if key not in s:
+            hull = ConvexHull(points)
+            faces = hull.simplices
+            fix_orientation(faces, points)
+            s[key] = faces
+        faces = s[key]
 
     save_mesh(opts["<outfilename>"], faces, vertices)
 
