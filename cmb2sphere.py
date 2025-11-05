@@ -50,6 +50,8 @@ FWHM = math.radians(float(opts["--fwhm"]))
 INPUT = "data/COM_CMB_IQU-commander_1024_R2.02_full.fits"
 # INPUT = "data/COM_CMB_IQU-commander_0256_R2.00.fits"
 AUTOSCALE = False
+# Scale factor to convert CMB temperature units (microkelvin) to sphere radius variations
+TEMPERATURE_SCALE = 2 * 10000
 
 
 def basename(filename):
@@ -86,7 +88,7 @@ def main():
         print(scale)
         r = RADIUS + scale * map_ps
     else:
-        r = (RADIUS + 2 * 10000 * map_ps)
+        r = (RADIUS + TEMPERATURE_SCALE * map_ps)
 
     vertices = np.stack(spherical(r, theta, phi), -1)
     points = np.stack(spherical(1, theta, phi), -1)
