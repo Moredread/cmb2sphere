@@ -62,7 +62,7 @@ def main():
         with open(pickle_filename, "rb") as f:
             alm = pickle.load(f)
             print("Alm loaded")
-    except:
+    except FileNotFoundError:
         print("Generate alm")
         alm = hp.map2alm(map)
         with open(pickle_filename, "wb") as f:
