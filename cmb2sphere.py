@@ -5,7 +5,7 @@ Usage:
   cmb2sphere [--fwhm=<degrees> --nside=<n>] <outfilename>
 
 Options:
-  --fwhm=<degrees>      Smooth using Gaussian with FHWM of <degrees> [default: 2]
+  --fwhm=<degrees>      Smooth using Gaussian with FWHM of <degrees> [default: 2]
   --nside=<n>           Reduce healpix mesh to n_side = <n> [default: 128]
 """
 
@@ -44,7 +44,7 @@ opts = docopt(__doc__)
 NSIDE_TARGET = int(opts["--nside"])
 RADIUS = 30.
 AMPLITUDE = 0.1 * RADIUS
-FHWM = math.radians(float(opts["--fwhm"]))
+FWHM = math.radians(float(opts["--fwhm"]))
 # INPUT = "data/COM_CMB_IQU-commander-field-Int_2048_R2.01_full.fits"
 INPUT = "data/COM_CMB_IQU-commander_1024_R2.02_full.fits"
 # INPUT = "data/COM_CMB_IQU-commander_0256_R2.00.fits"
@@ -70,9 +70,9 @@ def main():
 
     s = shelve.open("cache.shelve")
 
-    key = "{}^{}^{}".format(INPUT, NSIDE_TARGET, FHWM)
+    key = "{}^{}^{}".format(INPUT, NSIDE_TARGET, FWHM)
     if key not in s:
-        s[key] = hp.alm2map(alm, NSIDE_TARGET, fwhm=FHWM)
+        s[key] = hp.alm2map(alm, NSIDE_TARGET, fwhm=FWHM)
     map_ps = s[key]
 
     s.close()
