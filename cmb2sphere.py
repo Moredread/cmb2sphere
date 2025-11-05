@@ -29,6 +29,7 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 
 import sys
+import os
 
 import numpy as np
 import healpy as hp
@@ -52,7 +53,7 @@ AUTOSCALE = False
 
 
 def basename(filename):
-    return filename.split(".")[0]
+    return os.path.splitext(os.path.basename(filename))[0]
 
 def main():
     map = hp.read_map(INPUT)
