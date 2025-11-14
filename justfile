@@ -55,15 +55,14 @@ test: verify-data
 # Complete setup: setup environment and download data
 all: setup download
     @echo "All setup complete! Ready to build."
-    @echo "Run 'just build-custom <fwhm> <nside>' to generate the CMB sphere mesh."
+    @echo "Run 'just build <fwhm> <nside> <output>' to generate the CMB sphere mesh."
 
-# Clean generated cache files and output
+# Clean generated output files
 clean:
-    @echo "Cleaning cache files and generated outputs..."
-    rm -f *.pickle
-    rm -f cache.shelve*
-    rm -f faces.shelve*
+    @echo "Cleaning generated outputs..."
     rm -f *.stl
+    rm -rf __pycache__
+    rm -rf .pytest_cache
     @echo "Clean complete!"
 
 # Clean downloaded data (requires re-download)

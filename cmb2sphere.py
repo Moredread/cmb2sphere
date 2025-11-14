@@ -39,45 +39,34 @@ import os
 import sys
 
 # Constants
-RADIUS = 30.
-AMPLITUDE = 0.1 * RADIUS
+RADIUS = 30.0
 # Scale factor to convert CMB temperature fluctuations (microKelvin) to mesh displacement
 CMB_SCALE_FACTOR = 20000
-# INPUT = "data/COM_CMB_IQU-commander-field-Int_2048_R2.01_full.fits"
-INPUT = "data/COM_CMB_IQU-commander_1024_R2.02_full.fits"
-# INPUT = "data/COM_CMB_IQU-commander_0256_R2.00.fits"
-AUTOSCALE = False
 
 
 def main():
     opts = docopt(__doc__)
-    NSIDE_TARGET = int(opts["--nside"])
-    FHWM = math.radians(float(opts["--fwhm"]))
-    INPUT = opts["--input"]
+    nside_target = int(opts["--nside"])
+    fwhm = math.radians(float(opts["--fwhm"]))
+    input_file = opts["--input"]
 
-    if not os.path.exists(INPUT):
-        print(f"Error: Required data file not found: {INPUT}", file=sys.stderr)
+    if not os.path.exists(input_file):
+        print(f"Error: Required data file not found: {input_file}", file=sys.stderr)
         print("Please download the file as described in README.md", file=sys.stderr)
         sys.exit(1)
 
-    map = hp.read_map(INPUT)
+    map = hp.read_map(input_file)
     alm = hp.map2alm(map)
-    map_ps = hp.alm2map(alm, NSIDE_TARGET, fwhm=FHWM)
+    map_ps = hp.alm2map(alm, nside_target, fwhm=fwhm)
 
-    theta, phi = hp.pix2ang(NSIDE_TARGET, np.arange(hp.nside2npix(NSIDE_TARGET)))
-    amplitude = max(abs(np.max(map_ps)), abs(np.min(map_ps)))
+    theta, phi = hp.pix2ang(nside_target, np.arange(hp.nside2npix(nside_target)))
 
-    if AUTOSCALE:
-        scale = AMPLITUDE / amplitude
-        print(scale)
-        r = RADIUS + scale * map_ps
-    else:
-        r = RADIUS + CMB_SCALE_FACTOR * map_ps
+    r = RADIUS + CMB_SCALE_FACTOR * map_ps
 
     vertices = np.stack(spherical(r, theta, phi), -1)
     points = np.stack(spherical(1, theta, phi), -1)
 
-    assert points.shape[0] == hp.nside2npix(NSIDE_TARGET)
+    assert points.shape[0] == hp.nside2npix(nside_target)
     assert points.shape[0] == vertices.shape[0]
 
     hull = ConvexHull(points)

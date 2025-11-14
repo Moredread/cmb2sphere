@@ -134,5 +134,10 @@
           default = pythonSet.mkVirtualEnv "cmb2sphere-env" workspace.deps.default;
           cmb2sphere = pythonSet.cmb2sphere;
         });
+
+      # Formatter for 'nix fmt'
+      formatter = forAllSystems (system:
+        nixpkgs.legacyPackages.${system}.nixpkgs-fmt
+      );
     };
 }
