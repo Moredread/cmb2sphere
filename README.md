@@ -12,36 +12,81 @@ enough time to do it right... or maybe I was too lazy to improve it further. :p
 
 ## Installation
 
-This project uses [Poetry](https://python-poetry.org/) for dependency management.
+This project uses [UV](https://docs.astral.sh/uv/) for dependency management and includes a [Nix flake](https://nixos.wiki/wiki/Flakes) for reproducible development environments.
+
+### Using UV (Recommended)
 
 ```bash
 # Install dependencies
-poetry install
+uv sync
 
-# Or install with development dependencies
-poetry install --with dev
+# Run the script directly
+uv run python cmb2sphere.py output.stl
+
+# With custom parameters
+uv run python cmb2sphere.py --fwhm=3 --nside=256 output.stl
 ```
 
-Alternatively, if you prefer pip:
+### Using Nix Flake
+
+```bash
+# Enter development shell
+nix develop
+
+# Dependencies are automatically available
+python cmb2sphere.py output.stl
+```
+
+### Using Just (Task Runner)
+
+This project includes a `justfile` with common tasks:
+
+```bash
+# Show all available commands
+just --list
+
+# Complete setup (creates directories and installs dependencies)
+just setup
+
+# Download CMB data from Planck mission archive
+just download
+
+# Build with custom parameters
+just build 5 128 output.stl
+
+# Run tests
+just test
+```
+
+### Manual Installation with pip
+
+If you prefer pip:
 ```bash
 pip install healpy matplotlib numpy scipy numpy-stl docopt-ng
 ```
 
 ## Usage
 
-Download https://irsa.ipac.caltech.edu/data/Planck/release_2/all-sky-maps/maps/component-maps/cmb/COM_CMB_IQU-commander_1024_R2.02_full.fits and place it in the "data" subdirectory.
+### Download Data
 
-Run the script:
+Download the Planck CMB data:
 ```bash
-# With Poetry
-poetry run cmb2sphere output.stl
+just download
+```
 
-# Or activate the virtual environment
-poetry shell
-cmb2sphere output.stl
+Or manually download https://irsa.ipac.caltech.edu/data/Planck/release_2/all-sky-maps/maps/component-maps/cmb/COM_CMB_IQU-commander_1024_R2.02_full.fits and place it in the "data" subdirectory.
+
+### Generate Sphere Mesh
+
+```bash
+# Using UV
+uv run python cmb2sphere.py output.stl
+
+# Using Just
+just build 2 128 output.stl
 
 # With custom parameters
-poetry run cmb2sphere --fwhm=3 --nside=256 output.stl
+uv run python cmb2sphere.py --fwhm=3 --nside=256 custom_output.stl
 ```
 
 ## License
