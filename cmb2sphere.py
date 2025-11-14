@@ -1,11 +1,11 @@
 """
-cmp2sphere
+cmb2sphere
 
 Usage:
   cmb2sphere [--fwhm=<degrees> --nside=<n>] <outfilename>
 
 Options:
-  --fwhm=<degrees>      Smooth using Gaussian with FHWM of <degrees> [default: 2]
+  --fwhm=<degrees>      Smooth using Gaussian with FWHM of <degrees> [default: 2]
   --nside=<n>           Reduce healpix mesh to n_side = <n> [default: 128]
 """
 
