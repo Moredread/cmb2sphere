@@ -28,5 +28,5 @@ dev = [
 ]
 
 [build-system]
-requires = ["poetry-core"]
-build-backend = "poetry.core.masonry.api"
+requires = ["hatchling", "editables"]
+build-backend = "hatchling.build"
