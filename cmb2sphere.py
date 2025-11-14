@@ -88,9 +88,10 @@ def fix_orientation(faces, points):
     by checking each face's orientation and swapping vertices if needed.
 
     Algorithm:
-    - Compute face normal via cross product of two edge vectors
-    - Check if normal points outward by comparing with vertex position (dot product)
-    - If pointing inward (dot > 0), swap two vertices to reverse winding order
+    - For each face with vertices a, b, c (position vectors on sphere)
+    - Compute orientation check: dot(cross(a-c, a-b), a)
+    - If result > 0, the face points inward (needs correction)
+    - Swap two vertices to reverse winding order
 
     Args:
         faces: Nx3 array of vertex indices for each triangular face (modified in-place)
