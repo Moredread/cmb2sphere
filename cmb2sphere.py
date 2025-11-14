@@ -28,9 +28,6 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 """
 
 
-import sys
-
-sys.ps1 = 'SOMETHING'
 import numpy as np
 import healpy as hp
 import pickle
@@ -40,12 +37,9 @@ import math
 import shelve
 from docopt import docopt
 
-opts = docopt(__doc__)
-
-NSIDE_TARGET = int(opts["--nside"])
+# Constants
 RADIUS = 30.
 AMPLITUDE = 0.1 * RADIUS
-FHWM = math.radians(float(opts["--fwhm"]))
 # INPUT = "data/COM_CMB_IQU-commander-field-Int_2048_R2.01_full.fits"
 INPUT = "data/COM_CMB_IQU-commander_1024_R2.02_full.fits"
 # INPUT = "data/COM_CMB_IQU-commander_0256_R2.00.fits"
@@ -56,6 +50,10 @@ def basename(filename):
     return filename.split(".")[0]
 
 def main():
+    opts = docopt(__doc__)
+    NSIDE_TARGET = int(opts["--nside"])
+    FHWM = math.radians(float(opts["--fwhm"]))
+
     map = hp.read_map(INPUT)
 
     pickle_filename = "{}.pickle".format(basename(INPUT))
