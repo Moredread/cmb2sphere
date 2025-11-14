@@ -31,11 +31,9 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 import numpy as np
 import healpy as hp
-import pickle
 from stl import mesh
 from scipy.spatial import ConvexHull
 import math
-import shelve
 from docopt import docopt
 import os
 import sys
@@ -51,10 +49,6 @@ INPUT = "data/COM_CMB_IQU-commander_1024_R2.02_full.fits"
 AUTOSCALE = False
 
 
-def basename(filename):
-    """Extract filename without extension."""
-    return os.path.splitext(os.path.basename(filename))[0]
-
 def main():
     opts = docopt(__doc__)
     NSIDE_TARGET = int(opts["--nside"])
@@ -67,26 +61,8 @@ def main():
         sys.exit(1)
 
     map = hp.read_map(INPUT)
-
-    pickle_filename = "{}.pickle".format(basename(INPUT))
-    try:
-        with open(pickle_filename, "rb") as f:
-            alm = pickle.load(f)
-            print("Alm loaded")
-    except (FileNotFoundError, EOFError, pickle.UnpicklingError):
-        print("Generate alm")
-        alm = hp.map2alm(map)
-        with open(pickle_filename, "wb") as f:
-            pickle.dump(alm, f)
-
-    s = shelve.open("cache.shelve")
-
-    key = "{}^{}^{}".format(INPUT, NSIDE_TARGET, FHWM)
-    if key not in s:
-        s[key] = hp.alm2map(alm, NSIDE_TARGET, fwhm=FHWM)
-    map_ps = s[key]
-
-    s.close()
+    alm = hp.map2alm(map)
+    map_ps = hp.alm2map(alm, NSIDE_TARGET, fwhm=FHWM)
 
     theta, phi = hp.pix2ang(NSIDE_TARGET, np.arange(hp.nside2npix(NSIDE_TARGET)))
     amplitude = max(abs(np.max(map_ps)), abs(np.min(map_ps)))
@@ -104,15 +80,12 @@ def main():
     assert points.shape[0] == hp.nside2npix(NSIDE_TARGET)
     assert points.shape[0] == vertices.shape[0]
 
-    s = shelve.open("faces.shelve")
-    key = str(NSIDE_TARGET)
-    if key not in s:
-        hull = ConvexHull(points)
-        faces = hull.simplices
-        fix_orientation(faces, points)
-        s[key] = faces
-    faces = s[key]
-    s.close()
+    hull = ConvexHull(points)
+    faces = hull.simplices
+    corrected = fix_orientation(faces, points)
+    total = len(faces)
+    percentage = (corrected / total * 100) if total > 0 else 0
+    print(f"Faces corrected: {corrected}/{total} ({percentage:.1f}%)")
 
     save_mesh(opts["<outfilename>"], faces, vertices)
 
@@ -133,13 +106,19 @@ def fix_orientation(faces, points):
     Args:
         faces: Nx3 array of vertex indices for each triangular face (modified in-place)
         points: Mx3 array of vertex positions on unit sphere
+
+    Returns:
+        int: Number of faces that were corrected
     """
+    corrected = 0
     for i, f in enumerate(faces):
         p1, p2, p3 = f
         a, b, c = (points[p1], points[p2], points[p3])
         if np.dot(np.cross(a - c, a - b), a) > 0.0:
             faces[i][0] = p2
             faces[i][1] = p1
+            corrected += 1
+    return corrected
 
 
 def spherical(r, theta, phi):

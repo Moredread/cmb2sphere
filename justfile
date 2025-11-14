@@ -44,13 +44,13 @@ verify-data:
 # Build with custom smoothing and resolution
 build fwhm="5" nside="128" output=output_file: verify-data
     @echo "Running cmb2sphere with FWHM={{fwhm}} and nside={{nside}}..."
-    uv run python cmb2sphere.py --fwhm={{fwhm}} --nside={{nside}} {{output}}
+    python cmb2sphere.py --fwhm={{fwhm}} --nside={{nside}} {{output}}
     @echo "Generated: {{output}}"
 
 # Run tests
 test: verify-data
     @echo "Running tests..."
-    uv run pytest tests/test_end2end.py -v
+    pytest tests/test_end2end.py -v
 
 # Complete setup: setup environment and download data
 all: setup download
