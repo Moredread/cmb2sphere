@@ -27,18 +27,6 @@ dev = [
     "pytest",
 ]
 
-[tool.poetry.dependencies]
-python = "^3.8"
-healpy = "*"
-matplotlib = "*"
-numpy = "*"
-scipy = "*"
-numpy-stl = "*"
-docopt-ng = "*"
-
-[tool.poetry.group.dev.dependencies]
-pytest = "*"
-
 [build-system]
 requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
