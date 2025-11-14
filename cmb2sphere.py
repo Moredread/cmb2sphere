@@ -2,11 +2,12 @@
 cmb2sphere
 
 Usage:
-  cmb2sphere [--fwhm=<degrees> --nside=<n>] <outfilename>
+  cmb2sphere [--fwhm=<degrees> --nside=<n> --input=<file>] <outfilename>
 
 Options:
   --fwhm=<degrees>      Smooth using Gaussian with FWHM of <degrees> [default: 2]
   --nside=<n>           Reduce healpix mesh to n_side = <n> [default: 128]
+  --input=<file>        Input FITS file [default: data/COM_CMB_IQU-commander_1024_R2.02_full.fits]
 """
 
 """
@@ -36,10 +37,14 @@ from scipy.spatial import ConvexHull
 import math
 import shelve
 from docopt import docopt
+import os
+import sys
 
 # Constants
 RADIUS = 30.
 AMPLITUDE = 0.1 * RADIUS
+# Scale factor to convert CMB temperature fluctuations (microKelvin) to mesh displacement
+CMB_SCALE_FACTOR = 20000
 # INPUT = "data/COM_CMB_IQU-commander-field-Int_2048_R2.01_full.fits"
 INPUT = "data/COM_CMB_IQU-commander_1024_R2.02_full.fits"
 # INPUT = "data/COM_CMB_IQU-commander_0256_R2.00.fits"
@@ -47,12 +52,19 @@ AUTOSCALE = False
 
 
 def basename(filename):
-    return filename.split(".")[0]
+    """Extract filename without extension."""
+    return os.path.splitext(os.path.basename(filename))[0]
 
 def main():
     opts = docopt(__doc__)
     NSIDE_TARGET = int(opts["--nside"])
     FHWM = math.radians(float(opts["--fwhm"]))
+    INPUT = opts["--input"]
+
+    if not os.path.exists(INPUT):
+        print(f"Error: Required data file not found: {INPUT}", file=sys.stderr)
+        print("Please download the file as described in README.md", file=sys.stderr)
+        sys.exit(1)
 
     map = hp.read_map(INPUT)
 
@@ -61,7 +73,7 @@ def main():
         with open(pickle_filename, "rb") as f:
             alm = pickle.load(f)
             print("Alm loaded")
-    except:
+    except (FileNotFoundError, EOFError, pickle.UnpicklingError):
         print("Generate alm")
         alm = hp.map2alm(map)
         with open(pickle_filename, "wb") as f:
@@ -84,7 +96,7 @@ def main():
         print(scale)
         r = RADIUS + scale * map_ps
     else:
-        r = (RADIUS + 2 * 10000 * map_ps)
+        r = RADIUS + CMB_SCALE_FACTOR * map_ps
 
     vertices = np.stack(spherical(r, theta, phi), -1)
     points = np.stack(spherical(1, theta, phi), -1)
