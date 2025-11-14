@@ -46,11 +46,13 @@ poetry run cmb2sphere --fwhm=3 --nside=256 output.stl
 
 ## License
 
-The script itself is usable under the GPLv3. Please see the *COPYING* file for
-details. If there are questions in your jurisdiction, or if the GPLv3 is not
-clear enough on the point, please consider the resulting mesh files under a CC0
-or whatever you like. Effectively, do what you want with them, but please consider a
-citation, or other kind of attribution.
+The script itself is licensed under the GNU Affero General Public License v3.0
+or later (AGPL-3.0-or-later). Please see the *COPYING* file for details.
+
+If there are questions in your jurisdiction, or if the AGPL is not clear enough
+on the point, please consider the resulting mesh files under a CC0 or whatever
+you like. Effectively, do what you want with them, but please consider a citation,
+or other kind of attribution.
 
 
   [1]: http://dx.doi.org/10.1088%2F0143-0807%2F38%2F1%2F015601 "Clements, D. L., S. Sato, and A. Portela Fonseca. 'Cosmic sculpture: a new way to visualise the cosmic microwave background.' European Journal of Physics 38.1 (2016): 015601."
