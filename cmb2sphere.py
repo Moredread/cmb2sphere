@@ -12,7 +12,7 @@ Options:
 
 """
 cmb2sphere.py
-Copyright (C) 2022  André-Patrick Bubel
+Copyright (C) 2022-present  André-Patrick Bubel
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU Affero General Public License as published
