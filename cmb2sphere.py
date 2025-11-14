@@ -106,6 +106,22 @@ def main():
 
 
 def fix_orientation(faces, points):
+    """
+    Ensure all triangular faces have normals pointing outward from the sphere center.
+
+    scipy.spatial.ConvexHull doesn't guarantee consistent face orientation for all
+    triangles in spherical meshes. This function corrects any inward-facing normals
+    by checking each face's orientation and swapping vertices if needed.
+
+    Algorithm:
+    - Compute face normal via cross product of two edge vectors
+    - Check if normal points outward by comparing with vertex position (dot product)
+    - If pointing inward (dot > 0), swap two vertices to reverse winding order
+
+    Args:
+        faces: Nx3 array of vertex indices for each triangular face (modified in-place)
+        points: Mx3 array of vertex positions on unit sphere
+    """
     for i, f in enumerate(faces):
         p1, p2, p3 = f
         a, b, c = (points[p1], points[p2], points[p3])
