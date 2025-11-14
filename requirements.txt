@@ -3,5 +3,5 @@ matplotlib
 numpy
 scipy
 numpy-stl
-docopt
+docopt-ng
 pytest
