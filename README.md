@@ -10,9 +10,39 @@ anything that is wrong with the script. As often in "research" there wasn't
 enough time to do it right... or maybe I was too lazy to improve it further. :p
 (We really need a standardized note for this)
 
+## Installation
+
+This project uses [Poetry](https://python-poetry.org/) for dependency management.
+
+```bash
+# Install dependencies
+poetry install
+
+# Or install with development dependencies
+poetry install --with dev
+```
+
+Alternatively, if you prefer pip:
+```bash
+pip install healpy matplotlib numpy scipy numpy-stl docopt-ng
+```
+
 ## Usage
 
 Download https://irsa.ipac.caltech.edu/data/Planck/release_2/all-sky-maps/maps/component-maps/cmb/COM_CMB_IQU-commander_1024_R2.02_full.fits and place it in the "data" subdirectory.
+
+Run the script:
+```bash
+# With Poetry
+poetry run cmb2sphere output.stl
+
+# Or activate the virtual environment
+poetry shell
+cmb2sphere output.stl
+
+# With custom parameters
+poetry run cmb2sphere --fwhm=3 --nside=256 output.stl
+```
 
 ## License
 

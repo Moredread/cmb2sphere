@@ -1,7 +1,0 @@
-healpy
-matplotlib
-numpy
-scipy
-numpy-stl
-docopt-ng
-pytest
