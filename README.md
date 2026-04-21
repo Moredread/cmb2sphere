@@ -89,6 +89,18 @@ just build 2 128 output.stl
 uv run python cmb2sphere.py --fwhm=3 --nside=256 custom_output.stl
 ```
 
+## Data Attribution
+
+The Planck CMB data is provided by ESA and is free to use with the following
+acknowledgment (per the [ESA Planck data use policy](https://www.cosmos.esa.int/web/planck/planck-data-use)):
+
+> Based on observations obtained with Planck (http://www.esa.int/Planck), an
+> ESA science mission with instruments and contributions directly funded by ESA
+> Member States, NASA, and Canada.
+
+Please include this acknowledgment in any publication or distributed artifact
+(figures, 3D prints, etc.) derived from the Planck data.
+
 ## License
 
 The script itself is licensed under the GNU Affero General Public License v3.0
